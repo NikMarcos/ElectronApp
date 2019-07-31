@@ -1,0 +1,56 @@
+#upbutton {
+  background: url("up2.png") no-repeat top left;
+  height: 74px;
+  width: 54px;
+  bottom: 10px;
+  right: 20px;
+  cursor: pointer;
+  display: none;
+  position: fixed;
+  z-index: 999;
+}
+#buttons{
+  position: relative;
+}
+.extractMe{
+  position: relative;
+}
+
+
+#csvAll{
+  z-index: 4;
+  outline: none;
+}
+#csvAll:hover{
+  transform: scale(1.2, 1.2);
+}
+
+#csvDeposit{
+  z-index: 3;
+  left: -55px;
+  outline: none;
+}
+#csvDeposit:hover{
+  z-index: 5;
+  transform: scale(1.2, 1.2);
+}
+
+#csvWithdrawal{
+  z-index: 2;
+  left: -110px;
+  outline: none;
+}
+#csvWithdrawal:hover{
+  z-index: 5;
+  transform: scale(1.2, 1.2);
+}
+
+#csvEx{
+  z-index: 1;
+  left: -165px;
+  outline: none;
+}
+#csvEx:hover{
+  z-index: 5;
+  transform: scale(1.2, 1.2);
+}
