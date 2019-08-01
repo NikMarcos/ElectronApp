@@ -1,16 +1,14 @@
 const electron = require('electron');
 const {ipcRenderer} = electron;
 const remote = electron.remote;
+const $ = require('jquery');
 
-const form = document.querySelector('form');
-form.addEventListener('submit', submitForm);
-
-function submitForm (e) {
+$('#search').click(function(e){
   e.preventDefault();
-  const address = document.querySelector('#address').value;
+  let address = $('#address').val();
   if (address) {
     ipcRenderer.send('address:add', address);
     let window = remote.getCurrentWindow();
     window.close();
   }
-}
+});

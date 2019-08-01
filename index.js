@@ -1,4 +1,5 @@
 const electron = require('electron');
+const $ = require('jquery');
 const path = require('path');
 const BrowserWindow = electron.remote.BrowserWindow
 const {ipcRenderer} = electron;

@@ -40,7 +40,7 @@ function createWindow () {
 
 
   win = new BrowserWindow({
-    width: 1200,
+    width: 1250,
     height: 600,
     'webPreferences':
     {"nodeIntegration": true,
@@ -139,7 +139,7 @@ const opt = {
 }
 request(opt)
   .then(function (response2) {
-    let array2 = response2[0];
+    let array2 = response2;
     array2.forEach(function (item) {
       array.push(item)
     });
