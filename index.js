@@ -138,6 +138,7 @@ elm.removeChild(elm.firstChild);
   let priceAsset;
   let cancelLeasingId;
   let assetId;
+  let innerHTML = ``;
   for (let i = 1; i < rawData.length; i++) {
     let csvTemp = {};
     let divStyle = 'border-bottom:1px solid black; padding: 3px;';
@@ -191,6 +192,15 @@ elm.removeChild(elm.firstChild);
           strongSec.appendChild(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} htmlS"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -203,6 +213,15 @@ elm.removeChild(elm.firstChild);
           strongSec.appendChild(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} htmlS"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -217,6 +236,15 @@ elm.removeChild(elm.firstChild);
           strongSec.appendChild(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} htmlS"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -229,6 +257,15 @@ elm.removeChild(elm.firstChild);
           strongSec.appendChild(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} htmlS"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
