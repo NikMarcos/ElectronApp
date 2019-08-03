@@ -18,6 +18,8 @@
 
 
 #csvAll{
+  background-color: #98FB98;
+  border-radius: 5px;
   z-index: 4;
   outline: none;
 }
@@ -26,6 +28,8 @@
 }
 
 #csvDeposit{
+  background-color: #98FB98;
+  border-radius: 5px;
   z-index: 3;
   left: -55px;
   outline: none;
@@ -36,6 +40,8 @@
 }
 
 #csvWithdrawal{
+  background-color: #98FB98;
+  border-radius: 5px;
   z-index: 2;
   left: -110px;
   outline: none;
@@ -46,6 +52,8 @@
 }
 
 #csvEx{
+  background-color: #98FB98;
+  border-radius: 5px;
   z-index: 1;
   left: -165px;
   outline: none;

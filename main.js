@@ -143,12 +143,13 @@ request(opt)
     array2.forEach(function (item) {
       array.push(item)
     });
-    if (response2[0].length > 0 && array.length < 50000) {
+    if (response2.length > 0 && array.length < 50000) {
     lastObject = array2[array2.length-1];
     lastId = lastObject['id'];
     loopAPI(array, address, lastId);
   } else {
     array.unshift(address);
+    console.log("exit2");
     win.webContents.send('add:add', array);
   }
   });
@@ -178,12 +179,14 @@ request(options)
       // array = response[0];
       // Закомментировать при переходе на старый API ////////////////////////////////////
       array = response;
+      console.log("First loop " + array.length);
       if (array.length == 100 && array[array.length-1] != undefined) {
         let lastObject = array[array.length-1];
         let lastId = lastObject['id'];
         loopAPI(array, address, lastId);
       } else {
   array.unshift(address);
+  console.log("exit1");
   win.webContents.send('add:add', array);
 }
 });

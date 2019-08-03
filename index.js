@@ -10,10 +10,8 @@ const os = require('os');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 
-const addAddress = document.getElementById('addAddress');
-addAddress.addEventListener('click', function() {
-
-  let win = new BrowserWindow ({alwaysOnTop: true, width: 450, height: 200});
+$('#addAddress').click(function() {
+  let win = new BrowserWindow ({alwaysOnTop: true, width: 450, height: 200, backgroundColor: '#b7d6ec'});
   win.on('close', function() {win = null})
   win.loadFile('add.html')
   win.show()
@@ -52,10 +50,10 @@ function decimal(digit) {
   }
 return amountI;
 };
-const address = document.getElementById('address');
-const buttons = document.getElementById('buttons');
-const elm = document.getElementById('goal');
-const searchField = document.getElementById('search');
+const address = $('#address');
+const buttons = $('#buttons');
+const elm = $('#goal');
+const searchField = $('#search');
 let unique;
 let rawData;
 let idClick;
@@ -63,23 +61,17 @@ let listAssets = {};
 
 
 ipcRenderer.on('link:add', function (e, data) {
-  while (elm.firstChild) {
-  elm.removeChild(elm.firstChild);
-  }
-  while (buttons.firstChild) {
-  buttons.removeChild(buttons.firstChild);
-  }
-  while (address.firstChild) {
-  address.removeChild(address.firstChild);
-  }
-  while (searchField.firstChild) {
-  searchField.removeChild(searchField.firstChild);
-  }
-
-  let searchText = 'Ищу...';
-  const correctCoco = document.createTextNode(searchText);
-  elm.setAttribute("style", "text-align:center");
-  elm.appendChild(correctCoco);
+    elm.empty();
+    buttons.empty();
+    address.empty();
+    searchField.empty();
+    let searchWord = $('<div/>', {
+      text: "Ищу...",
+      class: 'searchWord',
+      css: {
+        textAlign: 'center'
+      }
+    }).appendTo('#goal');
 });
 
 ipcRenderer.on('add:add', function (e, data) {
@@ -93,7 +85,7 @@ ipcRenderer.on('add:add', function (e, data) {
       if (listAssets[nextObj['order1']['assetPair']['amountAsset']] == undefined) {
         partofApi = `ids=${nextObj['order1']['assetPair']['amountAsset']}&`;
         assetIdArray.push(partofApi);
-      };
+      }
       if (listAssets[nextObj['order1']['assetPair']['priceAsset']] == undefined) {
         partOfApi2 = `ids=${nextObj['order1']['assetPair']['priceAsset']}&`;
         assetIdArray.push(partOfApi2);
@@ -112,8 +104,8 @@ ipcRenderer.on('add:add', function (e, data) {
    unique = [...new Set(assetIdArray)];
    let arr = unique.filter(function(item) {
      return item != 'ids=null&'
- });
- ipcRenderer.send('ids:add', arr);
+   });
+   ipcRenderer.send('ids:add', arr);
 });
 
 let commonAssetsList;
@@ -124,13 +116,7 @@ let csvAssets = [];
 let csvEx = [];
 
 ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
-  while (elm.firstChild) {
-  elm.removeChild(elm.firstChild);
-}
-
-while (elm.firstChild) {
-elm.removeChild(elm.firstChild);
-}
+  elm.empty();
   let type;
   let type2;
   let status;
@@ -140,16 +126,25 @@ elm.removeChild(elm.firstChild);
   let assetId;
   for (let i = 1; i < rawData.length; i++) {
     let csvTemp = {};
-    let divStyle = 'border-bottom:1px solid black; padding: 3px;';
-    const div = document.createElement('div');
+    let divStyle = {borderBottom:'1px solid black', padding: '3px'};
+    let div = $('<div>');
     // const divBal = document.createElement('div');
     // divBal.setAttribute('id', 'oldBal');
     // divBal.style.cssText = 'border-bottom:1px solid black;background-color:#8FB4F5;transform:rotate(90deg);float:right;';
     // divBal.innerHTML = "Баланс";
     // $("divBal").css('transform', 'rotate(90deg)');
-    let strong = document.createElement("STRONG");
-    let strongSec = document.createElement("STRONG");
-    let strongDate = document.createElement("STRONG");
+    // let strong = document.createElement("STRONG");
+    let strong = $('<STRONG>', {
+       class: '',
+       id: ''
+     });
+    // let strongSec = document.createElement("STRONG");
+    let strongSec = $('<STRONG>', {
+       class: '',
+       id: ''
+     });
+    // let strongDate = document.createElement("STRONG");
+    let strongDate = $('<STRONG>');
     let textCorrectName;
     let obj = rawData[i];
     if (obj['type'] == 7) {
@@ -163,7 +158,7 @@ elm.removeChild(elm.firstChild);
       priceAsset = listAssets[obj['order1']['assetPair']['priceAsset']][0];
       residual = listAssets[obj['order1']['assetPair']['amountAsset']][1] - listAssets[obj['order1']['assetPair']['priceAsset']][1];
       if (listAssets[obj['order1']['assetPair']['amountAsset']][2] == "spam" || listAssets[obj['order1']['assetPair']['priceAsset']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
       if (residual >= 0) {
          decAmount = decimal(listAssets[obj['order1']['assetPair']['amountAsset']][1]);
@@ -180,15 +175,15 @@ elm.removeChild(elm.firstChild);
         price = tempDelim/decPrice;
         spend = amount*price;
       }
-      div.setAttribute('class', `7 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `7 bal ${obj['timestamp']}`);
+      div.attr('id', `${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['order1']['sender'] == rawData[0]) {
         if (obj['order1']['orderType'] == 'buy') {
           textCorrectName = 'Обмен: Купил ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' за ');
-          strongSec.appendChild(correctSec);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' за '));
+          strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
           csvTemp['type'] = textCorrectName;
@@ -197,10 +192,10 @@ elm.removeChild(elm.firstChild);
           csvEx.push(csvTemp);
         } else {
           textCorrectName = 'Обмен: Продал ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' за ');
-          strongSec.appendChild(correctSec);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' за '));
+          strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
           csvTemp['type'] = textCorrectName;
@@ -211,10 +206,10 @@ elm.removeChild(elm.firstChild);
       } else {
         if (obj['order2']['orderType'] == 'buy') {
           textCorrectName = 'Обмен: Купил ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' за ');
-          strongSec.appendChild(correctSec);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' за '));
+          strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
           csvTemp['type'] = textCorrectName;
@@ -223,10 +218,10 @@ elm.removeChild(elm.firstChild);
           csvEx.push(csvTemp);
         } else {
           textCorrectName = 'Обмен: Продал ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' за ');
-          strongSec.appendChild(correctSec);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' за '));
+          strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
           csvTemp['type'] = textCorrectName;
@@ -237,18 +232,18 @@ elm.removeChild(elm.firstChild);
       }
     } else if (obj['type'] == 4) {
       if (listAssets[obj['assetId']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
       let amm = listAssets[obj['assetId']];
       let amOfAsset = decimal(amm[1]);
-      div.setAttribute('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['sender'] == rawData[0]) {
         textCorrectName = 'Вывод: ';
-        const correctName = document.createTextNode(textCorrectName);
-        strong.appendChild(correctName);
-        const correctSec = document.createTextNode(' на адрес ');
-        strongSec.appendChild(correctSec);
-        div.setAttribute('class', `send bal ${obj['timestamp']}`);
+        const correctName = $(document.createTextNode(textCorrectName));
+        strong.append(correctName);
+        const correctSec = $(document.createTextNode(' на адрес '));
+        strongSec.append(correctSec);
+        div.attr('class', `send bal ${obj['timestamp']}`);
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['recipient']}`;
         csvTemp['type'] = textCorrectName;
@@ -257,11 +252,11 @@ elm.removeChild(elm.firstChild);
         csvWithdrawal.push(csvTemp);
       } else {
         textCorrectName = 'Ввод: ';
-        const correctName = document.createTextNode(textCorrectName);
-        strong.appendChild(correctName);
-        const correctSec = document.createTextNode(' с адреса ');
-        strongSec.appendChild(correctSec);
-        div.setAttribute('class', `deposit bal ${obj['timestamp']}`);
+        const correctName = $(document.createTextNode(textCorrectName));
+        strong.append(correctName);
+        const correctSec = $(document.createTextNode(' с адреса '));
+        strongSec.append(correctSec);
+        div.attr('class', `deposit bal ${obj['timestamp']}`);
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['sender']}`;
         csvTemp['type'] = textCorrectName;
@@ -272,14 +267,14 @@ elm.removeChild(elm.firstChild);
     } else if (obj['type'] == 2) {
         let amOfAsset = 100000000;
         let amount = obj['amount']/amOfAsset;
-        div.setAttribute('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}`);
+        div.attr('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}`);
         if (obj['sender'] == rawData[0]) {
           textCorrectName = 'Вывод: ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' на адрес ');
-          strongSec.appendChild(correctSec);
-          div.setAttribute('class', `send bal ${obj['timestamp']}`);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' на адрес '));
+          strongSec.append(correctSec);
+          div.attr('class', `send bal ${obj['timestamp']}`);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['recipient']}`;
           csvTemp['type'] = textCorrectName;
@@ -288,11 +283,11 @@ elm.removeChild(elm.firstChild);
           csvWithdrawal.push(csvTemp);
         } else {
           textCorrectName = 'Ввод: ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' с адреса ');
-          strongSec.appendChild(correctSec);
-          div.setAttribute('class', `deposit bal ${obj['timestamp']}`);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' с адреса '));
+          strongSec.append(correctSec);
+          div.attr('class', `deposit bal ${obj['timestamp']}`);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['sender']}`;
           csvTemp['type'] = textCorrectName;
@@ -301,31 +296,34 @@ elm.removeChild(elm.firstChild);
           csvDeposit.push(csvTemp);
         }
     } else if (obj['type'] == 11) {
+      if(obj['assetId'] == '3QvxP6YFBKpWJSMAfYtL8Niv8KmmKsnpb9uQwQpg8QN2'){
+        console.log(listAssets[obj['assetId']]);
+      }
       if (listAssets[obj['assetId']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
         let amm = listAssets[obj['assetId']];
         let amOfAsset = decimal(amm[1]);
-        div.setAttribute('id', `${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+        div.attr('id', `${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
         if (obj['sender'] == rawData[0]) {
           textCorrectName = 'Массовая транзакция: Вывод ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
           let allAmount = obj['totalAmount']/amOfAsset;
           type = `${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
-          div.setAttribute('class', `massSend bal ${obj['timestamp']}`);
+          div.attr('class', `massSend bal ${obj['timestamp']}`);
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
           csvWithdrawal.push(csvTemp);
         } else {
           textCorrectName = 'Массовая транзакция: Ввод ';
-          const correctName = document.createTextNode(textCorrectName);
-          strong.appendChild(correctName);
-          const correctSec = document.createTextNode(' с адреса ');
-          strongSec.appendChild(correctSec);
+          const correctName = $(document.createTextNode(textCorrectName));
+          strong.append(correctName);
+          const correctSec = $(document.createTextNode(' с адреса '));
+          strongSec.append(correctSec);
           let allAmount = obj['transfers'][0]['amount']/amOfAsset;
-          div.setAttribute('class', `massReceiv bal ${obj['timestamp']}`);
+          div.attr('class', `massReceiv bal ${obj['timestamp']}`);
           type = `${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]} `;
           type2 = `${obj['sender']}`;
           csvTemp['type'] = textCorrectName;
@@ -334,50 +332,50 @@ elm.removeChild(elm.firstChild);
           csvDeposit.push(csvTemp);
         }
     } else if (obj['type'] == 8) {
-      div.setAttribute('class', `8 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `waves${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `8 bal ${obj['timestamp']}`);
+      div.attr('id', `waves${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['status'] == 'canceled') {
         status = " (отменен)"
       } else {
         status = " (не отменен)"
       }
       textCorrectName = 'Лизинг: ';
-      const correctName = document.createTextNode(textCorrectName);
-      strong.appendChild(correctName);
+      const correctName = $(document.createTextNode(textCorrectName));
+      strong.append(correctName);
       type = `${(obj['amount']/100000000).toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 9) {
-      div.setAttribute('class', `9 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `waves${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `9 bal ${obj['timestamp']}`);
+      div.attr('id', `waves${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `${obj['leaseId']}`;
       textCorrectName = 'Отмена лизинга с ID: ';
-      const correctName = document.createTextNode(textCorrectName);
-      strong.appendChild(correctName);
+      const correctName = $(document.createTextNode(textCorrectName));
+      strong.append(correctName);
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 3) {
       if (listAssets[obj['assetId']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
       let amOfAsset = decimal(listAssets[obj['assetId']][1]);
       let amount = obj['quantity']/amOfAsset;
-      div.setAttribute('class', `3 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `3 bal ${obj['timestamp']}`);
+      div.attr('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['script'] == null) {
         textCorrectName = 'Создание ассета: ';
-        const correctName = document.createTextNode(textCorrectName);
-        strong.appendChild(correctName);
+        const correctName = $(document.createTextNode(textCorrectName));
+        strong.append(correctName);
         type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         csvTemp['type'] = textCorrectName;
         csvTemp['data'] = type;
         csvAll.push(csvTemp);
       } else {
         textCorrectName = 'Создание ассета: ';
-        const correctName = document.createTextNode(textCorrectName);
-        strong.appendChild(correctName);
+        const correctName = $(document.createTextNode(textCorrectName));
+        strong.append(correctName);
         type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]} (смарт-ассет)`;
         csvTemp['type'] = textCorrectName;
         csvTemp['data'] = type;
@@ -385,64 +383,64 @@ elm.removeChild(elm.firstChild);
       }
     } else if (obj['type'] == 6) {
       if (listAssets[obj['assetId']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
       let amOfAsset = decimal(listAssets[obj['assetId']][1]);
       let amount = obj['amount']/amOfAsset;
       textCorrectName = 'Сжигание ассета: ';
       const correctName = document.createTextNode(textCorrectName);
-      strong.appendChild(correctName);
-      div.setAttribute('class', `6 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+      strong.append(correctName);
+      div.attr('class', `6 bal ${obj['timestamp']}`);
+      div.attr('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 5) {
       if (listAssets[obj['assetId']][2] == "spam") {
-        divStyle += 'background-color:#D3D3D3';
+        divStyle['backgroundColor'] = '#D3D3D3';
       }
       let amOfAsset = decimal(listAssets[obj['assetId']][1]);
       let amount = obj['quantity']/amOfAsset;
       textCorrectName = 'Довыпуск ассета: ';
-      const correctName = document.createTextNode(textCorrectName);
-      strong.appendChild(correctName);
-      div.setAttribute('class', `5 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
+      const correctName = $(document.createTextNode(textCorrectName));
+      strong.append(correctName);
+      div.attr('class', `5 bal ${obj['timestamp']}`);
+      div.attr('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 12) {
       textCorrectName = "";
-      div.setAttribute('class', `12 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `12 bal ${obj['timestamp']}`);
+      div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `Дата-транзакция `;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 10) {
       textCorrectName = 'Создание алиаса: ';
-      const correctName = document.createTextNode(textCorrectName);
-      strong.appendChild(correctName);
-      div.setAttribute('class', `10 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
+      const correctName = $(document.createTextNode(textCorrectName));
+      strong.append(correctName);
+      div.attr('class', `10 bal ${obj['timestamp']}`);
+      div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `${obj['alias']}`;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 13) {
       textCorrectName = "";
-      div.setAttribute('class', `13 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `13 bal ${obj['timestamp']}`);
+      div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `Скрипт-транзакция`;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 16) {
       textCorrectName = "";
-      div.setAttribute('class', `16 bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `16 bal ${obj['timestamp']}`);
+      div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
       type = `Вызов скрипта `;
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
@@ -450,279 +448,306 @@ elm.removeChild(elm.firstChild);
     } else {
       textCorrectName = "";
       type = `Type: ${obj['type']}, `
-      div.setAttribute('class', `else bal ${obj['timestamp']}`);
-      div.setAttribute('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
+      div.attr('class', `else bal ${obj['timestamp']}`);
+      div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
       csvTemp['type'] = textCorrectName;
       csvTemp['data'] = type;
       csvAll.push(csvTemp);
     }
+
+
      let id = `${obj['id']}`;
      let textId = 'Id: ';
      let dateStr = `${new Date(obj['timestamp']).toLocaleString()}`;
-     const correctDate = document.createTextNode(` Дата: `);
-     strongDate.appendChild(correctDate);
-     div.style.cssText = divStyle;
-     const div2 = document.createElement('div');
-     div2.setAttribute('class', 'linkId');
-     const a = document.createElement('a');
-     a.setAttribute('style', 'text-decoration:none');
-     a.setAttribute('href', `https://wavesexplorer.com/tx/${obj['id']}`);
+     const correctDate = $(document.createTextNode(` Дата: `));
+     strongDate.append(correctDate);
+     div.css(divStyle);
+     // const div2 = document.createElement('div');
+     let div2 = $('<div>', {
+        class: 'linkId'
+      });
+     // const a = document.createElement('a');
+     let a = $('<a>');
+     a.css({textDecoration:'none'});
+     a.attr('href', `https://wavesexplorer.com/tx/${obj['id']}`);
+
      // a.setAttribute('target', '_blank');
-     const correctType = document.createTextNode(type);
-     const correctDateStr = document.createTextNode(dateStr);
-     const correctId = document.createTextNode(id);
-     const correctTextId = document.createTextNode(textId);
-     a.appendChild(correctId);
-     div2.appendChild(correctTextId);
-     div2.appendChild(a);
+     const correctType = $(document.createTextNode(type));
+     const correctDateStr = $(document.createTextNode(dateStr));
+     const correctId = $(document.createTextNode(id));
+     const correctTextId = $(document.createTextNode(textId));
+     a.append(correctId);
+     div2.append(correctTextId);
+     div2.append(a);
      if (obj['type'] == 8) {
-       const correctStatus = document.createTextNode(status);
-       div2.appendChild(correctStatus);
+       const correctStatus = $(document.createTextNode(status));
+       div2.append(correctStatus);
      };
-     div.appendChild(strong);
-     div.appendChild(correctType);
+
+     div.append(strong);
+     div.append(correctType);
      if (obj['type'] == 7 || obj['type'] == 4 || obj['type'] == 2 || obj['type'] == 11) {
-       div.appendChild(strongSec);
-       div.appendChild(document.createTextNode(type2));
+       div.append(strongSec);
+       div.append($(document.createTextNode(type2)));
      }
-     div.appendChild(strongDate);
-     div.appendChild(correctDateStr);
-     div.appendChild(div2);
+     div.append(strongDate);
+     div.append(correctDateStr);
+     div.append(div2);
      if (cancelLeasingId && obj['type'] == 9) {
-       const correctCancelLeasingId = document.createTextNode(cancelLeasingId);
-       div.appendChild(correctCancelLeasingId);
+       const correctCancelLeasingId = $(document.createTextNode(cancelLeasingId));
+       div.append(correctCancelLeasingId);
      };
       // div.appendChild(divBal);
-      elm.removeAttribute("style");
-      elm.appendChild(div);
+      elm.removeAttr("style");
+      elm.append(div);
       type2 = '';
    };
 
 
-   address.setAttribute("style", "text-align:center");
-   const correctAddress = document.createTextNode(rawData[0]);
-   let strongAddress = document.createElement("STRONG");
-   strongAddress.appendChild(correctAddress);
-   address.appendChild(strongAddress);
+   address.css({'text-align': 'center'});
+   const correctAddress = $(document.createTextNode(rawData[0]));
+   let strongAddress = $('<STRONG>');
+   strongAddress.append(correctAddress);
+   $(address).append(strongAddress);
 
-   let buttonMassReceiv = document.getElementsByClassName('massReceiv');
-   let buttonDep = document.getElementsByClassName('deposit');
+   let classMassReceiv = $('.massReceiv');
+   let classDep = $('.deposit');
 
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'csvEx');
-     button.setAttribute('class', 'extractMe');
-     button.setAttribute('style', 'background-color:#98FB98; border-radius:5px');
-     button.innerHTML = `Экспорт обменов`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classDep.length || classMassReceiv.length) {
+     let csvEx = $('<button>', {
+        text: `Экспорт обменов`,
+        class: 'extractMe',
+        id: 'csvEx'
+      });
+      $('#buttons').append(csvEx);
    }
 
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'csvWithdrawal');
-     button.setAttribute('class', 'extractMe');
-     button.setAttribute('style', 'background-color:#98FB98; border-radius:5px');
-     button.innerHTML = `Экспорт выводов`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classDep.length || classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let csvWithdrawal = $('<button>', {
+       text: `Экспорт выводов`,
+       class: 'extractMe',
+       id: 'csvWithdrawal'
+    });
+    $(csvWithdrawal).insertBefore(first);
    }
 
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'csvDeposit');
-     button.setAttribute('class', 'extractMe');
-     button.setAttribute('style', 'background-color:#98FB98; border-radius:5px');
-     button.innerHTML = `Экспорт вводов`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classDep.length || classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let csvDeposit = $('<button>', {
+        text: `Экспорт вводов`,
+        class: 'extractMe',
+        id: 'csvDeposit'
+      });
+      $(csvDeposit).insertBefore(first);
+   }
+   //
+   if (classDep.length || classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let csvAll = $('<button>', {
+        text: `Экспорт всех транзакций`,
+        class: 'extractMe',
+        id: 'csvAll'
+      });
+      $(csvAll).insertBefore(first);
    }
 
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'csvAll');
-     button.setAttribute('class', 'extractMe');
-     button.setAttribute('style', 'background-color:#98FB98; border-radius:5px');
-     button.innerHTML = `Экспорт всех транзакций`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let classElse = $('.else');
+   if (classElse.length) {
+     let first = $('#buttons').find('button').first();
+     let btnElse = $('<button>', {
+        text: `Другие транзакции (${classElse.length})`,
+        class: 'clickMe',
+        id: 'else'
+     });
+      $(btnElse).insertBefore(first);
    }
 
-   let buttonElse = document.getElementsByClassName('else');
-   if (buttonElse.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'else');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Другие транзакции (${$('.else').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class13 = $('.13');
+   if (class13.length) {
+     let first = $('#buttons').find('button').first();
+     let btn13 = $('<button>', {
+        text: `Скрипт-транзакция (${class13.length})`,
+        class: 'clickMe',
+        id: 13
+      });
+      $(btn13).insertBefore(first);
    }
 
-   let button13 = document.getElementsByClassName('13');
-   if (button13.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '13');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Скрипт-транзакция (${$('.13').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class12 = $('.12');
+   if (class12.length) {
+     let first = $('#buttons').find('button').first();
+     let btn12 = $('<button>', {
+        text: `Дата-транзакция (${class12.length})`,
+        class: 'clickMe',
+        id: 12
+      });
+      $(btn12).insertBefore(first);
    }
 
-   let button12 = document.getElementsByClassName('12');
-   if (button12.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '12');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Дата-транзакция (${$('.12').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class10 = $('.10');
+   if (class10.length) {
+     let first = $('#buttons').find('button').first();
+     let btn10 = $('<button>', {
+        text: `Создание алиаса (${class10.length})`,
+        class: 'clickMe',
+        id: 10
+      });
+      $(btn10).insertBefore(first);
    }
 
-   let button10 = document.getElementsByClassName('10');
-   if (button10.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '10');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Создание алиаса (${$('.10').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class6 = $('.6');
+   if (class6.length) {
+   let first = $('#buttons').find('button').first();
+   let btn6 = $('<button>', {
+      text: `Сжигание ассета (${class6.length})`,
+      class: 'clickMe',
+      id: 6
+    });
+    $(btn6).insertBefore(first);
    }
 
-   let button6 = document.getElementsByClassName('6');
-   if (button6.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '6');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Сжигание ассета (${$('.6').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class5 = $('.5');
+   if (class5.length) {
+   let first = $('#buttons').find('button').first();
+   let btn5 = $('<button>', {
+      text: `Довыпуск ассета (${class5.length})`,
+      class: 'clickMe',
+      id: 5
+    });
+    $(btn5).insertBefore(first);
    }
 
-   let button5 = document.getElementsByClassName('5');
-   if (button5.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '5');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Довыпуск ассета (${$('.5').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class3 = $('.3');
+   if (class3.length) {
+     let first = $('#buttons').find('button').first();
+     let btn3 = $('<button>', {
+        text: `Создание ассета (${class3.length})`,
+        class: 'clickMe',
+        id: 3
+      });
+      $(btn3).insertBefore(first);
    }
 
-   let button3 = document.getElementsByClassName('3');
-   if (button3.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '3');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Создание ассета (${$('.3').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let btnMassRec = $('<button>', {
+      text: `Массовая транзакция: Ввод (${classMassReceiv.length})`,
+      class: 'clickMe',
+      id: 'massReceiv'
+    });
+    $(btnMassRec).insertBefore(first);
    }
 
-   if (buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'massReceiv');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Массовая транзакция: Ввод (${$('.massReceiv').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let classMassSend = $('.massSend');
+   if (classMassSend.length) {
+     let first = $('#buttons').find('button').first();
+     let btnMassSend = $('<button>', {
+        text: `Массовая транзакция: Вывод (${classMassSend.length})`,
+        class: 'clickMe',
+        id: 'massSend'
+      });
+      $(btnMassSend).insertBefore(first);
    }
 
-   let buttonMassSend = document.getElementsByClassName('massSend');
-   if (buttonMassSend.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'massSend');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Массовая транзакция: Вывод (${$('.massSend').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class9 = $('.9');
+   if (class9.length) {
+     let first = $('#buttons').find('button').first();
+     let btn9 = $('<button>', {
+        text: `Отмена лизинг (${class9.length})`,
+        class: 'clickMe',
+        id: 9
+      });
+      $(btn9).insertBefore(first);
    }
 
-   let button9 = document.getElementsByClassName('9');
-   if (button9.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '9');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Отмена лизинг (${$('.9').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class8 = $('.8');
+   if (class8.length) {
+     let first = $('#buttons').find('button').first();
+     let btn8 = $('<button>', {
+      text: `Лизинг (${class8.length})`,
+      class: 'clickMe',
+      id: 8
+    });
+    $(btn8).insertBefore(first);
    }
 
-   let button8 = document.getElementsByClassName('8');
-   if (button8.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '8');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Лизинг (${$('.8').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let class7 = $('.7');
+   if (class7.length) {
+     let first = $('#buttons').find('button').first();
+     let btn7 = $('<button>', {
+        text: `Обмен (${class7.length})`,
+        class: 'clickMe',
+        id: 7
+      });
+      $(btn7).insertBefore(first);
    }
 
-   let button7 = document.getElementsByClassName('7');
-   if (button7.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', '7');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Обмен (${$('.7').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let classSend = $('.send');
+   if (classSend.length) {
+     let first = $('#buttons').find('button').first();
+     let btnSend = $('<button>', {
+        text: `Вывод (${classSend.length})`,
+        class: 'clickMe',
+        id: 'send'
+      });
+      $(btnSend).insertBefore(first);
    }
 
-   let buttonSend = document.getElementsByClassName('send');
-   if (buttonSend.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'send');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Вывод (${$('.send').length})`
-     let first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classDep.length) {
+     let first = $('#buttons').find('button').first();
+     let btnDeposit = $('<button>', {
+        text: `Ввод (${classDep.length})`,
+        class: 'clickMe',
+        id: 'deposit'
+      });
+      $(btnDeposit).insertBefore(first);
    }
 
-
-   if (buttonDep.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'deposit');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Ввод (${$('.deposit').length})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   if (classDep.length || classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let btnAll = $('<button>', {
+        text: `Все транзакции (${rawData.length - 1})`,
+        class: 'clickMe',
+        id: 'all'
+      });
+      $(btnAll).insertBefore(first);
    }
 
-
-
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'all');
-     button.setAttribute('class', 'clickMe');
-     button.innerHTML = `Все транзакции (${rawData.length - 1})`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
+   let buttonBalance = $('.clickMe');
+   if (classDep.length || classMassReceiv.length) {
+     let first = $('#buttons').find('button').first();
+     let btnBal = $('<button>', {
+        text: `Баланс аккаунта`,
+        class: 'balance',
+        id: 'balance'
+      });
+      $(btnBal).insertBefore(first);
    }
 
+   let inputForSearch = $('<input>', {
+      type: 'text',
+      text: `Баланс аккаунта`,
+      id: 'field',
+      css:{
+        width: '60%'
+      }
+    });
 
+   let buttonForSearch = $('<input>', {
+      type: 'button',
+      value: 'Жми сюда для поиска',
+      id: 'searchButton',
+      css: {
+        backgroundColor:'#7FFFD4',
+        borderRadius:'15px'
+      }
+    });
 
-   let buttonBalance = document.getElementsByClassName('clickMe');
-   if (buttonDep.length > 0 || buttonMassReceiv.length > 0) {
-     let button = document.createElement('button');
-     button.setAttribute('id', 'balance');
-     button.setAttribute('class', 'balance');
-     button.innerHTML = `Баланс аккаунта`
-     var first = buttons.childNodes[0];
-     buttons.insertBefore(button,first);
-   }
-
-   let inputForSearch = document.createElement('input');
-   let buttonForSearch = document.createElement('input');
-   inputForSearch.setAttribute('type', 'text');
-   buttonForSearch.setAttribute('type', 'button');
-   buttonForSearch.setAttribute('style', 'background-color:#7FFFD4; border-radius:15px');
-   inputForSearch.setAttribute('id', 'field');
-   buttonForSearch.setAttribute('id', 'searchButton');
-   buttonForSearch.setAttribute('value', 'Жми сюда для поиска');
-   inputForSearch.style.width = "60%";
-   const correctText = document.createTextNode('Введите текст или Waves адрес для поиска ' );
-   searchField.appendChild(correctText);
-   searchField.appendChild(inputForSearch);
-   searchField.appendChild(buttonForSearch);
+   const correctText = $(document.createTextNode('Введите текст или Waves адрес для поиска ' ));
+   searchField.append(correctText);
+   searchField.append(inputForSearch);
+   searchField.append(buttonForSearch);
 
    $("body").on("dblclick", ".bal", function(){
      let waves = "" + null;
@@ -732,8 +757,6 @@ elm.removeChild(elm.firstChild);
 //        console.log($(this).text().split(" "));
 // });
 
-
-     // console.log(divClass[2]);
      let reversedRawData = rawData.reverse();
      // let arrayBal = [];
      let objectBal = {};
