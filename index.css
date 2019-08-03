@@ -16,15 +16,15 @@
   position: relative;
 }
 
+.spam{
+  background-color: #D3D3D3;
+}
 
 #csvAll{
   background-color: #98FB98;
   border-radius: 5px;
   z-index: 4;
   outline: none;
-}
-#csvAll:hover{
-  transform: scale(1.2, 1.2);
 }
 
 #csvDeposit{
@@ -34,10 +34,6 @@
   left: -55px;
   outline: none;
 }
-#csvDeposit:hover{
-  z-index: 5;
-  transform: scale(1.2, 1.2);
-}
 
 #csvWithdrawal{
   background-color: #98FB98;
@@ -45,10 +41,6 @@
   z-index: 2;
   left: -110px;
   outline: none;
-}
-#csvWithdrawal:hover{
-  z-index: 5;
-  transform: scale(1.2, 1.2);
 }
 
 #csvEx{
@@ -58,7 +50,8 @@
   left: -165px;
   outline: none;
 }
-#csvEx:hover{
+
+#csvDeposit:hover, #csvWithdrawal:hover, #csvEx:hover, #csvAll:hover{
   z-index: 5;
   transform: scale(1.2, 1.2);
 }

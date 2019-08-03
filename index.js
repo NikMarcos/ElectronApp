@@ -124,6 +124,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
   let priceAsset;
   let cancelLeasingId;
   let assetId;
+  let htmlDiv = ``;
   for (let i = 1; i < rawData.length; i++) {
     let csvTemp = {};
     let divStyle = {borderBottom:'1px solid black', padding: '3px'};
@@ -186,6 +187,16 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+
+          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -198,6 +209,16 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+
+          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -212,6 +233,16 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+
+          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -224,6 +255,16 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           strongSec.append(correctSec);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
+
+          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
+          <strong> за </strong>
+          ${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -246,6 +287,20 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         div.attr('class', `send bal ${obj['timestamp']}`);
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['recipient']}`;
+        if (listAssets[obj['assetId']][2] == "spam") {
+          htmlDiv += `<div class="send bal ${obj['timestamp']} spam"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+        } else {
+          htmlDiv += `<div class="send bal ${obj['timestamp']}"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+        }
+        htmlDiv += `<strong>Вывод </strong>${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
+        <strong> на адрес </strong>
+        ${obj['recipient']}
+        <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+        <div class="linkId"><strong> Id: </strong>
+        <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+        </div>`;
         csvTemp['type'] = textCorrectName;
         csvTemp['data'] = type;
         csvAll.push(csvTemp);
@@ -259,6 +314,21 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         div.attr('class', `deposit bal ${obj['timestamp']}`);
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['sender']}`;
+        if (listAssets[obj['assetId']][2] == "spam") {
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']} spam"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+        } else {
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']}"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+        }
+        htmlDiv += `<strong>Ввод </strong>
+        ${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
+        <strong> с адреса </strong>
+        ${obj['sender']}
+        <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+        <div class="linkId"><strong> Id: </strong>
+        <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+        </div>`;
         csvTemp['type'] = textCorrectName;
         csvTemp['data'] = type;
         csvAll.push(csvTemp);
@@ -277,6 +347,18 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           div.attr('class', `send bal ${obj['timestamp']}`);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['recipient']}`;
+
+          htmlDiv += `<div class="send bal ${obj['timestamp']}"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Вывод </strong>
+          ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
+          <strong> на адрес </strong>
+          ${obj['recipient']}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
+
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -290,15 +372,24 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           div.attr('class', `deposit bal ${obj['timestamp']}`);
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['sender']}`;
+
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']}"
+          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
+          <strong>Вывод </strong>
+          ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
+          <strong> с адреса </strong>
+          ${obj['sender']}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
+
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
           csvDeposit.push(csvTemp);
         }
     } else if (obj['type'] == 11) {
-      if(obj['assetId'] == '3QvxP6YFBKpWJSMAfYtL8Niv8KmmKsnpb9uQwQpg8QN2'){
-        console.log(listAssets[obj['assetId']]);
-      }
       if (listAssets[obj['assetId']][2] == "spam") {
         divStyle['backgroundColor'] = '#D3D3D3';
       }
@@ -312,6 +403,21 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           let allAmount = obj['totalAmount']/amOfAsset;
           type = `${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
           div.attr('class', `massSend bal ${obj['timestamp']}`);
+
+          if (listAssets[obj['assetId']][2] == "spam") {
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam"
+            id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+          } else {
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']}"
+            id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+          }
+          htmlDiv += `<strong>Массовая транзакция: Вывод </strong>
+          ${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
+
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -326,6 +432,23 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           div.attr('class', `massReceiv bal ${obj['timestamp']}`);
           type = `${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]} `;
           type2 = `${obj['sender']}`;
+
+          if (listAssets[obj['assetId']][2] == "spam") {
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam"
+            id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+          } else {
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']}"
+            id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
+          }
+          htmlDiv += `<strong>Массовая транзакция: Ввод </strong>
+          ${allAmount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
+          <strong> с адреса </strong>
+          ${obj['sender']}
+          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}
+          <div class="linkId"><strong> Id: </strong>
+          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+          </div>`;
+
           csvTemp['type'] = textCorrectName;
           csvTemp['data'] = type;
           csvAll.push(csvTemp);
@@ -502,7 +625,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
       elm.append(div);
       type2 = '';
    };
-
+   elm.append(htmlDiv);
 
    address.css({'text-align': 'center'});
    const correctAddress = $(document.createTextNode(rawData[0]));
