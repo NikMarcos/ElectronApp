@@ -188,7 +188,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
 
-          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
           <strong> за </strong>
@@ -210,7 +210,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
 
-          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
           <strong> за </strong>
@@ -234,7 +234,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
 
-          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
           <strong> за </strong>
@@ -256,7 +256,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
           type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
 
-          htmlDiv += `<div class="7 bal ${obj['timestamp']}"
+          htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
           <strong> за </strong>
@@ -288,10 +288,10 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['recipient']}`;
         if (listAssets[obj['assetId']][2] == "spam") {
-          htmlDiv += `<div class="send bal ${obj['timestamp']} spam"
+          htmlDiv += `<div class="send bal ${obj['timestamp']} spam new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
         } else {
-          htmlDiv += `<div class="send bal ${obj['timestamp']}"
+          htmlDiv += `<div class="send bal ${obj['timestamp']} new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
         }
         htmlDiv += `<strong>Вывод </strong>${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
@@ -315,10 +315,10 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         type2 = `${obj['sender']}`;
         if (listAssets[obj['assetId']][2] == "spam") {
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']} spam"
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']} spam new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
         } else {
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']}"
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']} new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
         }
         htmlDiv += `<strong>Ввод </strong>
@@ -348,7 +348,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['recipient']}`;
 
-          htmlDiv += `<div class="send bal ${obj['timestamp']}"
+          htmlDiv += `<div class="send bal ${obj['timestamp']} new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Вывод </strong>
           ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
@@ -373,7 +373,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           type2 = `${obj['sender']}`;
 
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']}"
+          htmlDiv += `<div class="deposit bal ${obj['timestamp']} new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Вывод </strong>
           ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
@@ -405,10 +405,10 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           div.attr('class', `massSend bal ${obj['timestamp']}`);
 
           if (listAssets[obj['assetId']][2] == "spam") {
-            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam"
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam new"
             id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
           } else {
-            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']}"
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} new"
             id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
           }
           htmlDiv += `<strong>Массовая транзакция: Вывод </strong>
@@ -434,10 +434,10 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           type2 = `${obj['sender']}`;
 
           if (listAssets[obj['assetId']][2] == "spam") {
-            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam"
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} spam new"
             id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
           } else {
-            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']}"
+            htmlDiv += `<div class="massReceiv bal ${obj['timestamp']} new"
             id="${obj['sender'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
           }
           htmlDiv += `<strong>Массовая транзакция: Ввод </strong>

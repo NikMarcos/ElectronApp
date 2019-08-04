@@ -20,6 +20,11 @@
   background-color: #D3D3D3;
 }
 
+.new{
+  border-bottom: 1px solid black;
+  padding: 3px;
+}
+
 #csvAll{
   background-color: #98FB98;
   border-radius: 5px;
