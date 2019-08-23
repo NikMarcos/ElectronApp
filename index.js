@@ -181,18 +181,8 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         price = tempDelim/decPrice;
         spend = amount*price;
       }
-      // div.attr('class', `7 bal ${obj['timestamp']}`);
-      // div.attr('id', `${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['order1']['sender'] == rawData[0]) {
         if (obj['order1']['orderType'] == 'buy') {
-          // textCorrectName = 'Обмен: Купил ';
-          // const correctName = $(document.createTextNode(textCorrectName));
-          // strong.append(correctName);
-          // const correctSec = $(document.createTextNode(' за '));
-          // strongSec.append(correctSec);
-          // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
-          // type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
-
           htmlDiv += `<div class="7 bal ${obj['timestamp']}"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
@@ -208,14 +198,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           csvAll.push(csvTemp);
           csvEx.push(csvTemp);
         } else {
-          // textCorrectName = 'Обмен: Продал ';
-          // const correctName = $(document.createTextNode(textCorrectName));
-          // strong.append(correctName);
-          // const correctSec = $(document.createTextNode(' за '));
-          // strongSec.append(correctSec);
-          // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
-          // type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
-
           htmlDiv += `<div class="7 bal ${obj['timestamp']}"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
@@ -233,14 +215,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         }
       } else {
         if (obj['order2']['orderType'] == 'buy') {
-          // textCorrectName = 'Обмен: Купил ';
-          // const correctName = $(document.createTextNode(textCorrectName));
-          // strong.append(correctName);
-          // const correctSec = $(document.createTextNode(' за '));
-          // strongSec.append(correctSec);
-          // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
-          // type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
-
           htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Купил </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
@@ -256,14 +230,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           csvAll.push(csvTemp);
           csvEx.push(csvTemp);
         } else {
-          // textCorrectName = 'Обмен: Продал ';
-          // const correctName = $(document.createTextNode(textCorrectName));
-          // strong.append(correctName);
-          // const correctSec = $(document.createTextNode(' за '));
-          // strongSec.append(correctSec);
-          // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}`;
-          // type2 = `${spend.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${priceAsset}`;
-
           htmlDiv += `<div class="7 bal ${obj['timestamp']} new"
           id="${amountAsset.toLowerCase()}${priceAsset.toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Обмен: Продал </strong>${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${amountAsset}
@@ -283,16 +249,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     } else if (obj['type'] == 4) {
       let amm = listAssets[obj['assetId']];
       let amOfAsset = decimal(amm[1]);
-      // div.attr('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
       if (obj['sender'] == rawData[0]) {
-        // textCorrectName = 'Вывод: ';
-        // const correctName = $(document.createTextNode(textCorrectName));
-        // strong.append(correctName);
-        // const correctSec = $(document.createTextNode(' на адрес '));
-        // strongSec.append(correctSec);
-        // div.attr('class', `send bal ${obj['timestamp']}`);
-        // type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
-        // type2 = `${obj['recipient']}`;
         if (listAssets[obj['assetId']][2] == "spam") {
           htmlDiv += `<div class="send bal ${obj['timestamp']} spam"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
@@ -312,14 +269,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         csvAll.push(csvTemp);
         csvWithdrawal.push(csvTemp);
       } else {
-        // textCorrectName = 'Ввод: ';
-        // const correctName = $(document.createTextNode(textCorrectName));
-        // strong.append(correctName);
-        // const correctSec = $(document.createTextNode(' с адреса '));
-        // strongSec.append(correctSec);
-        // div.attr('class', `deposit bal ${obj['timestamp']}`);
-        // type = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
-        // type2 = `${obj['sender']}`;
         if (listAssets[obj['assetId']][2] == "spam") {
           htmlDiv += `<div class="deposit bal ${obj['timestamp']} spam new"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
@@ -360,17 +309,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     } else if (obj['type'] == 2) {
         let amOfAsset = 100000000;
         let amount = obj['amount']/amOfAsset;
-        // div.attr('id', `${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}`);
         if (obj['sender'] == rawData[0]) {
-          // textCorrectName = 'Вывод: ';
-          // const correctName = $(document.createTextNode(textCorrectName));
-          // strong.append(correctName);
-          // const correctSec = $(document.createTextNode(' на адрес '));
-          // strongSec.append(correctSec);
-          // div.attr('class', `send bal ${obj['timestamp']}`);
-          // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
-          // type2 = `${obj['recipient']}`;
-
           htmlDiv += `<div class="send bal ${obj['timestamp']}"
           id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
           <strong>Вывод </strong>
@@ -452,18 +391,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           csvDeposit.push(csvTemp);
         }
     } else if (obj['type'] == 8) {
-      // div.attr('class', `8 bal ${obj['timestamp']}`);
-      // div.attr('id', `waves${new Date(obj['timestamp']).toLocaleDateString()}`);
-      // if (obj['status'] == 'canceled') {
-      //   status = " (отменен)"
-      // } else {
-      //   status = " (не отменен)"
-      // }
-      // textCorrectName = 'Лизинг: ';
-      // const correctName = $(document.createTextNode(textCorrectName));
-      // strong.append(correctName);
-      // type = `${(obj['amount']/100000000).toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
-
       htmlDiv += `<div class="8 bal ${obj['timestamp']}"
       id="waves${new Date(obj['timestamp']).toLocaleDateString()}">
       <strong>Лизинг </strong>
@@ -496,28 +423,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     } else if (obj['type'] == 3) {
       let amOfAsset = decimal(listAssets[obj['assetId']][1]);
       let amount = obj['quantity']/amOfAsset;
-      // div.attr('class', `3 bal ${obj['timestamp']}`);
-      // div.attr('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
-      // if (obj['script'] == null) {
-      //   textCorrectName = 'Создание ассета: ';
-      //   const correctName = $(document.createTextNode(textCorrectName));
-      //   strong.append(correctName);
-      //   type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
-      //
-      //
-      //   csvTemp['type'] = textCorrectName;
-      //   csvTemp['data'] = type;
-      //   csvAll.push(csvTemp);
-      // } else {
-      //   textCorrectName = 'Создание ассета: ';
-      //   const correctName = $(document.createTextNode(textCorrectName));
-      //   strong.append(correctName);
-      //   type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]} (смарт-ассет)`;
-      //   csvTemp['type'] = textCorrectName;
-      //   csvTemp['data'] = type;
-      //   csvAll.push(csvTemp);
-      // }
-
       if (listAssets[obj['assetId']][2] == "spam") {
         htmlDiv += `<div class="3 bal ${obj['timestamp']} spam"
         id="${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
@@ -561,13 +466,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     } else if (obj['type'] == 5) {
       let amOfAsset = decimal(listAssets[obj['assetId']][1]);
       let amount = obj['quantity']/amOfAsset;
-      // textCorrectName = 'Довыпуск ассета: ';
-      // const correctName = $(document.createTextNode(textCorrectName));
-      // strong.append(correctName);
-      // div.attr('class', `5 bal ${obj['timestamp']}`);
-      // div.attr('id', `${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}`);
-      // type = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
-
       if (listAssets[obj['assetId']][2] == "spam") {
         htmlDiv += `<div class="5 bal ${obj['timestamp']} spam"
         id="${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
@@ -598,13 +496,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
       // csvTemp['data'] = type;
       csvAll.push(csvTemp);
     } else if (obj['type'] == 10) {
-      // textCorrectName = 'Создание алиаса: ';
-      // const correctName = $(document.createTextNode(textCorrectName));
-      // strong.append(correctName);
-      // div.attr('class', `10 bal ${obj['timestamp']}`);
-      // div.attr('id', `${new Date(obj['timestamp']).toLocaleDateString()}`);
-      // type = `c`;
-
       htmlDiv += `<div class="10 bal ${obj['timestamp']}"
       id="${new Date(obj['timestamp']).toLocaleDateString()}">
       <strong>Создание алиаса: </strong>${obj['alias']}<br>
@@ -684,8 +575,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
    $('#bar').css('width', '100%');
    $('#bar').text('100%');
    elm.append(htmlDiv);
-
-   // address.css({'text-align': 'center'});
    const correctAddress = $(document.createTextNode(rawData[0]));
    let strongAddress = $('<STRONG>');
    strongAddress.append(correctAddress);
@@ -981,19 +870,6 @@ idClick = 'all';
         $(`.linkId`).children().show();
         $("#goal").children().not(`.${idClick}`).not(`button`).hide();
       }
-    // } else {
-    //   console.log('not_value');
-    //   if (idClick == "all") {
-    //     console.log("all");
-    //     $("#goal").children().show();
-    //   } else {
-    //     console.log('spec');
-    //     $("#goal").children().show();
-    //     $(`.${idClick}`).children().show();
-    //     $(`.linkId`).children().show();
-    //     $("#goal").children().not(`.${idClick}`).not(`button`).hide();
-    //   }
-    // }
   });
 
   $('body').on("click", ".balance", function(){
