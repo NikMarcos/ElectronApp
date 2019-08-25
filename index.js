@@ -9,6 +9,7 @@ const fs = require('fs');
 const os = require('os');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const interimBalance = require('./interimBalance');
+const {sender, recipient} = require('./type4');
 
 
 let amountI;
@@ -150,7 +151,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     let csvTemp = {};
     let divStyle = {borderBottom:'1px solid black', padding: '3px'};
     let div = $('<div>');
-
     let textCorrectName;
     let obj = rawData[i];
     if (obj['type'] == 7) {
@@ -250,46 +250,26 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
       let amm = listAssets[obj['assetId']];
       let amOfAsset = decimal(amm[1]);
       if (obj['sender'] == rawData[0]) {
-        if (listAssets[obj['assetId']][2] == "spam") {
-          htmlDiv += `<div class="send bal ${obj['timestamp']} spam"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
-        } else {
-          htmlDiv += `<div class="send bal ${obj['timestamp']}"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
-        }
-        htmlDiv += `<strong>Вывод </strong>${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
-        <strong> на адрес </strong>${obj['recipient']}<br>
-        <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}<br>
-        <div class="linkId"><strong> Id: </strong>
-        <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
-        </div>`;
+
+        let type4Sender = sender(obj, listAssets);
+        htmlDiv += type4Sender;
+
         csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
         csvTemp['type'] = `Вывод`;
         csvTemp['data'] = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         csvAll.push(csvTemp);
         csvWithdrawal.push(csvTemp);
       } else {
-        if (listAssets[obj['assetId']][2] == "spam") {
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']} spam new"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
-        } else {
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']} new"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}${listAssets[obj['assetId']][0].toLowerCase()}${new Date(obj['timestamp']).toLocaleDateString()}">`
-        }
-        htmlDiv += `<strong>Ввод </strong>
-        ${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}
-        <strong> с адреса </strong>${obj['sender']}<br>
-        <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}<br>
-        <div class="linkId"><strong> Id: </strong>
-        <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
-        </div>`;
+
+        let type4Recipient = recipient(obj, listAssets);
+        htmlDiv += type4Recipient;
+
         csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
         csvTemp['type'] = `Ввод`;
         csvTemp['data'] = `${(obj['amount']/amOfAsset).toLocaleString('en-US', {maximumSignificantDigits: 16})} ${listAssets[obj['assetId']][0]}`;
         csvAll.push(csvTemp);
         csvDeposit.push(csvTemp);
-      }
-
+        }
     } else if (obj['type'] == 1) {
 
       htmlDiv += `<div class="creation bal ${obj['timestamp']}"
@@ -572,9 +552,8 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
     }
    };
 
-   $('#bar').css('width', '100%');
-   $('#bar').text('100%');
    elm.append(htmlDiv);
+
    const correctAddress = $(document.createTextNode(rawData[0]));
    let strongAddress = $('<STRONG>');
    strongAddress.append(correctAddress);
@@ -840,7 +819,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
 $(document).ready(function() {
 
 
-idClick = 'all';
+  idClick = 'all';
   $(document).on('click', 'a[href^="http"]', function(event) {
       event.preventDefault();
       shell.openExternal(this.href);
