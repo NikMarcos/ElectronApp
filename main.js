@@ -5,6 +5,7 @@ const url = require('url');
 const shell = require('electron').shell;
 const iconImg = nativeImage.createFromPath(__dirname + '/elect.icns')
 const Buffer = require('buffer').Buffer;
+const client = require('electron-connect').client;
 
 let win;
 let spamList = [];
@@ -38,10 +39,13 @@ function createWindow () {
 
   });
 
-
+// max-width: 810
   win = new BrowserWindow({
-    width: 1250,
-    height: 600,
+    width: 1000,
+    height: 650,
+    resizable: true,
+    // frame: false,
+    // transparent: true,
     'webPreferences':
     {"nodeIntegration": true,
     "webSecurity": true}
@@ -49,15 +53,13 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadFile('index.html')
+  client.create(win);
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     win = null
   })
 
@@ -108,16 +110,13 @@ function createWindow () {
 
 const menu = Menu.buildFromTemplate(mainMenu);
 Menu.setApplicationMenu(menu)
+// client.create(win);
 }
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
 
-// Quit when all windows are closed.
+app.on('ready', createWindow);
+// client.create(BrowserWindow);
+
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -143,10 +142,11 @@ request(opt)
     array2.forEach(function (item) {
       array.push(item)
     });
-    if (response2[0].length > 0 && array.length < 50000) {
+    if (response2.length > 0 && array.length < 50000) {
     lastObject = array2[array2.length-1];
     lastId = lastObject['id'];
     loopAPI(array, address, lastId);
+    win.webContents.send('perc2:add', 'array');
   } else {
     array.unshift(address);
     win.webContents.send('add:add', array);
@@ -156,6 +156,7 @@ request(opt)
 
 let array;
 ipcMain.on('address:add', function (event, reqAddress) {
+  // win.setSize(500,600)/////////////////////////////////////////
   win.webContents.send('link:add', 'array');
   let address = reqAddress;
   const cookie = { url: 'http://localhost', name: 'address', value: address }
@@ -178,10 +179,12 @@ request(options)
       // array = response[0];
       // Закомментировать при переходе на старый API ////////////////////////////////////
       array = response;
+      console.log("First loop " + array.length);
       if (array.length == 100 && array[array.length-1] != undefined) {
         let lastObject = array[array.length-1];
         let lastId = lastObject['id'];
         loopAPI(array, address, lastId);
+        win.webContents.send('perc1:add', 'array');
       } else {
   array.unshift(address);
   win.webContents.send('add:add', array);
@@ -214,9 +217,11 @@ let url = `https://api.wavesplatform.com/v0/assets?${items}`
           }
           currentList[names[i]['data']['id']] = fullArr;
         }
+        win.webContents.send('perc3:add', 'array');
         listIds(getArray);
-      });
+      })
     } else {
+      win.setSize(1250,650)
       win.webContents.send('idsandprecision:add', currentList);
     }
     };
@@ -269,4 +274,18 @@ ipcMain.on('ids:add', function (event, array) {
       });
      });
     })
+  });
+
+ipcMain.on('alias:add', function (event, address) {
+
+    const options = {
+      method: 'GET',
+      uri: `https://nodes.wavesnodes.com/alias/by-address/${address}`,
+      json: true
+    };
+    request(options)
+      .then(function (response) {
+        console.log(response);
+        win.webContents.send('aliases:add', response);
+      });
   });
