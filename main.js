@@ -5,6 +5,7 @@ const url = require('url');
 const shell = require('electron').shell;
 const iconImg = nativeImage.createFromPath(__dirname + '/elect.icns')
 const Buffer = require('buffer').Buffer;
+const client = require('electron-connect').client;
 
 let win;
 let spamList = [];
@@ -38,7 +39,7 @@ function createWindow () {
 
   });
 
-
+// max-width: 810
   win = new BrowserWindow({
     width: 1000,
     height: 650,
@@ -52,6 +53,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadFile('index.html')
+  client.create(win);
 
   // Open the DevTools.
   win.webContents.openDevTools()
@@ -108,9 +110,11 @@ function createWindow () {
 
 const menu = Menu.buildFromTemplate(mainMenu);
 Menu.setApplicationMenu(menu)
+// client.create(win);
 }
 
 app.on('ready', createWindow);
+// client.create(BrowserWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -9,7 +9,8 @@ const fs = require('fs');
 const os = require('os');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const interimBalance = require('./interimBalance');
-const {sender, recipient} = require('./type4');
+const {type4Sender, type4Recipient} = require('./modules/type4');
+const {type2Sender, type2Recipient} = require('./modules/type2');
 
 
 let amountI;
@@ -251,7 +252,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
       let amOfAsset = decimal(amm[1]);
       if (obj['sender'] == rawData[0]) {
 
-        let type4Sender = sender(obj, listAssets);
+        let type4Sender = type4Sender(obj, listAssets);
         htmlDiv += type4Sender;
 
         csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
@@ -261,7 +262,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         csvWithdrawal.push(csvTemp);
       } else {
 
-        let type4Recipient = recipient(obj, listAssets);
+        let type4Recipient = type4Recipient(obj, listAssets);
         htmlDiv += type4Recipient;
 
         csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
@@ -290,30 +291,20 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         let amOfAsset = 100000000;
         let amount = obj['amount']/amOfAsset;
         if (obj['sender'] == rawData[0]) {
-          htmlDiv += `<div class="send bal ${obj['timestamp']}"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
-          <strong>Вывод </strong>
-          ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
-          <strong> на адрес </strong>${obj['recipient']}<br>
-          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}<br>
-          <div class="linkId"><strong> Id: </strong>
-          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
-          </div>`;
+
+          let type2Sender = type2Sender(obj, amount);
+          htmlDiv += type2Sender;
+
           csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
           csvTemp['type'] = `Вывод`;
           csvTemp['data'] = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
           csvAll.push(csvTemp);
           csvWithdrawal.push(csvTemp);
         } else {
-          htmlDiv += `<div class="deposit bal ${obj['timestamp']}"
-          id="${obj['sender'].toLowerCase()}${obj['recipient'].toLowerCase()}waves${new Date(obj['timestamp']).toLocaleDateString()}">
-          <strong>Ввод </strong>
-          ${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves
-          <strong> c адреса </strong>${obj['sender']}<br>
-          <strong> Дата: </strong>${new Date(obj['timestamp']).toLocaleString()}<br>
-          <div class="linkId"><strong> Id: </strong>
-          <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
-          </div>`;
+
+          let type2Recipient = type2Recipient(obj, amount);
+          htmlDiv += type2Recipient;
+
           csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
           csvTemp['type'] = `Ввод`;
           csvTemp['data'] = `${amount.toLocaleString('en-US', {maximumSignificantDigits: 16})} Waves`;
@@ -801,6 +792,11 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
    $('<br>').insertAfter(evenButtons);
 
    let htmlSearhForm = `
+   <div class="cross">
+   <svg width="10" height="10">
+   <path d="M0 0 L 10 10 M10 0 L 0 10" stroke="black" stroke-width="1"/>
+   </svg>
+   </div>
    Введите Waves адрес/название ассета/дату для поиска <br>
    <input type="text" id="field">
    <input type="button" id="searchButton" value="Поиск">`
@@ -818,6 +814,10 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
 
 $(document).ready(function() {
 
+  $(document).on('click', '.cross', () => {
+    let text = $('#field').val('');
+  });
+
 
   idClick = 'all';
   $(document).on('click', 'a[href^="http"]', function(event) {
@@ -827,7 +827,7 @@ $(document).ready(function() {
 
   $('.searchDataBtn').click(function(e){
     e.preventDefault();
-    let address = searchDataInp.val();
+    let address = searchDataInp.val().trim(); // добавил trim()
     if (address) {
       $('.filter').hide();
       searchDataInp.val('');
