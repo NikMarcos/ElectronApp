@@ -13,6 +13,7 @@ const {type4Sender, type4Recipient} = require('./modules/type4');
 const {type2Sender, type2Recipient} = require('./modules/type2');
 
 
+
 let amountI;
 function decimal(digit) {
   switch (digit) {
@@ -62,24 +63,12 @@ let listAssets = {};
 
 ipcRenderer.on('link:add', function (e, data) {
     elm.empty();
-    buttons.empty();
+    // buttons.empty();
     address.empty();
-    searchField.empty();
+    // searchField.empty();
     extractButtons.empty();
-    let html = `<div id="testDiv">Поиск данных аккаунта <div id="progress"><div id="bar">0%</div></div></div>`;
+    let html = `<div id="testDiv">Поиск данных аккаунта...</div>`;
     $(elm).html(html);
-    $('#bar').css('width', '5%');
-    $('#bar').text('5%');
-});
-
-ipcRenderer.on('perc1:add', function (e, data) {
-  $('#bar').css('width', '20%');
-  $('#bar').text('20%');
-});
-
-ipcRenderer.on('perc2:add', function (e, data) {
-  $('#bar').css('width', '40%');
-  $('#bar').text('40%');
 });
 
 ipcRenderer.on('add:add', function (e, data) {
@@ -113,20 +102,7 @@ ipcRenderer.on('add:add', function (e, data) {
    let arr = unique.filter(function(item) {
      return item != 'ids=null&'
    });
-   $('#bar').css('width', '60%');
-   $('#bar').text('60%');
    ipcRenderer.send('ids:add', arr);
-});
-
-
-ipcRenderer.on('perc3:add', function (e, data) {
-  $('#bar').css('width', '80%');
-  $('#bar').text('80%');
-});
-
-ipcRenderer.on('perc4:add', function (e, data) {
-  $('#bar').css('width', '90%');
-  $('#bar').text('90%');
 });
 
 let commonAssetsList;
@@ -291,8 +267,8 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         let amount = obj['amount']/amOfAsset;
         if (obj['sender'] == rawData[0]) {
 
-          let type2Sender = type2Sender(obj, amount);
-          htmlDiv += type2Sender;
+          let type2Send = type2Sender(obj, amount);
+          htmlDiv += type2Send;
 
           csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
           csvTemp['type'] = `Вывод`;
@@ -301,8 +277,8 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
           csvWithdrawal.push(csvTemp);
         } else {
 
-          let type2Recipient = type2Recipient(obj, amount);
-          htmlDiv += type2Recipient;
+          let type2Recip = type2Recipient(obj, amount);
+          htmlDiv += type2Recip;
 
           csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
           csvTemp['type'] = `Ввод`;
@@ -489,18 +465,6 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
       csvTemp['type'] = `Скрипт-транзакция`;
       // csvTemp['data'] = type;
       csvAll.push(csvTemp);
-    } else if (obj['type'] == 16) {
-      htmlDiv += `<div class="16 bal ${obj['timestamp']}"
-      id="${new Date(obj['timestamp']).toLocaleDateString()}">
-      <strong>Вызов скрипта </strong><br>
-      <strong>Дата: </strong> ${new Date(obj['timestamp']).toLocaleDateString()}<br>
-      <div class="linkId"><strong> Id: </strong>
-      <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
-      </div>`;
-      csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
-      csvTemp['type'] = `Вызов скрипта`;
-      // csvTemp['data'] = type;
-      csvAll.push(csvTemp);
     } else if (obj['type'] == 14) {
       if (obj['minSponsoredAssetFee'] == null) {
         htmlDiv += `<div class="14 bal ${obj['timestamp']}"
@@ -527,6 +491,30 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
         // csvTemp['data'] = type;
         csvAll.push(csvTemp);
       }
+    } else if (obj['type'] == 15) {
+      htmlDiv += `<div class="15 bal ${obj['timestamp']}"
+      id="${new Date(obj['timestamp']).toLocaleDateString()}">
+      <strong>Установка скрипта на ассет </strong><br>
+      <strong>Дата: </strong> ${new Date(obj['timestamp']).toLocaleDateString()}<br>
+      <div class="linkId"><strong> Id: </strong>
+      <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+      </div>`;
+      csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
+      csvTemp['type'] = `Установка скрипта на ассет`;
+      // csvTemp['data'] = type;
+      csvAll.push(csvTemp);
+    } else if (obj['type'] == 16) {
+      htmlDiv += `<div class="16 bal ${obj['timestamp']}"
+      id="${new Date(obj['timestamp']).toLocaleDateString()}">
+      <strong>Вызов скрипта </strong><br>
+      <strong>Дата: </strong> ${new Date(obj['timestamp']).toLocaleDateString()}<br>
+      <div class="linkId"><strong> Id: </strong>
+      <a href="https://wavesexplorer.com/tx/${obj['id']}" target="_blank">${obj['id']}</a></div>
+      </div>`;
+      csvTemp['date'] = `${new Date(obj['timestamp']).toLocaleString()}`;
+      csvTemp['type'] = `Вызов скрипта`;
+      // csvTemp['data'] = type;
+      csvAll.push(csvTemp);
     } else {
       htmlDiv += `<div class="else bal ${obj['timestamp']}"
       id="${new Date(obj['timestamp']).toLocaleDateString()}">
@@ -551,244 +539,150 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
 
    let classMassReceiv = $('.massReceiv');
    let classDep = $('.deposit');
-   let extractDiv = $('.filter #extract');
+   let extractDiv = $('.filter .extract');
 
-   if (classDep.length || classMassReceiv.length) {
-     let csvEx = $('<button>', {
-        text: `Экспорт обменов`,
-        class: 'extractMe',
-        id: 'csvEx'
-      });
-      extractDiv.append(csvEx);
+   if (!classDep.length && !classMassReceiv.length) {
+     $('#csvEx').hide();
    }
 
-   if (classDep.length || classMassReceiv.length) {
-     let first = extractDiv.find('button').first();
-     let csvWithdrawal = $('<button>', {
-       text: `Экспорт выводов`,
-       class: 'extractMe',
-       id: 'csvWithdrawal'
-    });
-    $(csvWithdrawal).insertBefore(first);
+   if (!classDep.length && !classMassReceiv.length) {
+    $('#csvWithdrawal').hide();
    }
 
-   if (classDep.length || classMassReceiv.length) {
-     let first = extractDiv.find('button').first();
-     let csvDeposit = $('<button>', {
-        text: `Экспорт вводов`,
-        class: 'extractMe',
-        id: 'csvDeposit'
-      });
-      $(csvDeposit).insertBefore(first);
+   if (!classDep.length && !classMassReceiv.length) {
+     $('#csvDeposit').hide();
+
    }
    //
-   if (classDep.length || classMassReceiv.length) {
-     let first = extractDiv.find('button').first();
-     let csvAll = $('<button>', {
-        text: `Экспорт всех транзакций`,
-        class: 'extractMe',
-        id: 'csvAll'
-      });
-      $(csvAll).insertBefore(first);
+   if (!classDep.length && !classMassReceiv.length) {
+     $('#csvAll').hide();
    }
 
    let classElse = $('.else');
    if (classDep.length || classMassReceiv.length) {
-     // let first = $(buttons).find('button').first();
-     let btnElse = $('<button>', {
-        text: `Другие транзакции (${classElse.length})`,
-        class: 'clickMe',
-        id: 'else'
-     });
-      buttons.append(btnElse);
+      $('.else-btn').text('Другие (' + classElse.length + ')');
+   } else {
+     $('.else-btn').parent().hide();
    }
 
    let class16 = $('.16');
    if (class16.length) {
-     let first = $(buttons).find('button').first();
-     let btn16 = $('<button>', {
-        text: `Вызов скрипта (${class16.length})`,
-        class: 'clickMe',
-        id: 16
-      });
-      $(btn16).insertBefore(first);
-   }
+      $('.scriptCall-btn').text('Вызов скрипта (' + class16.length + ')');
+    } else {
+      $('.scriptCall-btn').parent().hide();
+    }
+
+    let class15 = $('.15');
+    if (class15.length) {
+      $('.assetScript-btn').text('Скрипт на ассет (' + class15.length + ')');
+    } else {
+      $('.assetScript-btn').parent().hide();
+    }
 
    let class14 = $('.14');
    if (class14.length) {
-     let first = $(buttons).find('button').first();
-     let btn14 = $('<button>', {
-        text: `Спонсорство (${class14.length})`,
-        class: 'clickMe',
-        id: 14
-      });
-      $(btn14).insertBefore(first);
-   }
+      $('.sponsor-btn').text('Спонсорство (' + class14.length + ')');
+    } else {
+      $('.sponsor-btn').parent().hide();
+    }
 
    let class13 = $('.13');
    if (class13.length) {
-     let first = $(buttons).find('button').first();
-     let btn13 = $('<button>', {
-        text: `Скрипт-транзакция (${class13.length})`,
-        class: 'clickMe',
-        id: 13
-      });
-      $(btn13).insertBefore(first);
+      $('.script-btn').text('Скрипт-транзакция (' + class13.length + ')');
+   } else {
+     $('.script-btn').parent().hide();
    }
 
    let class12 = $('.12');
    if (class12.length) {
-     let first = $(buttons).find('button').first();
-     let btn12 = $('<button>', {
-        text: `Дата-транзакция (${class12.length})`,
-        class: 'clickMe',
-        id: 12
-      });
-      $(btn12).insertBefore(first);
-   }
+      $('.data-btn').text('Дата-транзакция (' + class12.length + ')');
+    } else {
+      $('.data-btn').parent().hide();
+    }
 
    let class10 = $('.10');
    if (class10.length) {
-     let first = $(buttons).find('button').first();
-     let btn10 = $('<button>', {
-        text: `Создание алиаса (${class10.length})`,
-        class: 'clickMe',
-        id: 10
-      });
-      $(btn10).insertBefore(first);
-   }
+      $('.alias-btn').text('Создание алиаса (' + class10.length + ')');
+    } else {
+      $('.alias-btn').parent().hide();
+    }
 
    let class6 = $('.6');
    if (class6.length) {
-   let first = $(buttons).find('button').first();
-   let btn6 = $('<button>', {
-      text: `Сжигание ассета (${class6.length})`,
-      class: 'clickMe',
-      id: 6
-    });
-    $(btn6).insertBefore(first);
-   }
+    $('.burn-btn').text('Сжигание ассета (' + class6.length + ')');
+  } else {
+    $('.burn-btn').parent().hide();
+  }
 
    let class5 = $('.5');
    if (class5.length) {
-   let first = $(buttons).find('button').first();
-   let btn5 = $('<button>', {
-      text: `Довыпуск ассета (${class5.length})`,
-      class: 'clickMe',
-      id: 5
-    });
-    $(btn5).insertBefore(first);
-   }
+    $('.assetReissue-btn').text('Довыпуск ассета (' + class5.length + ')');
+  } else {
+    $('.assetReissue-btn').parent().hide();
+  }
 
    let class3 = $('.3');
    if (class3.length) {
-     let first = $(buttons).find('button').first();
-     let btn3 = $('<button>', {
-        text: `Создание ассета (${class3.length})`,
-        class: 'clickMe',
-        id: 3
-      });
-      $(btn3).insertBefore(first);
-   }
+      $('.assetCreation-btn').text('Создание ассета (' + class3.length + ')');
+    } else {
+      $('.assetCreation-btn').parent().hide();
+    }
 
    if (classMassReceiv.length) {
-     let first = $(buttons).find('button').first();
-     let btnMassRec = $('<button>', {
-      text: `Массовая транзакция: Ввод (${classMassReceiv.length})`,
-      class: 'clickMe',
-      id: 'massReceiv'
-    });
-    $(btnMassRec).insertBefore(first);
-   }
+    $('.massReceive-btn').text('Массовая транзакция: Ввод (' + classMassReceiv.length + ')');
+  } else {
+    $('.massReceive-btn').parent().hide();
+  }
 
    let classMassSend = $('.massSend');
    if (classMassSend.length) {
-     let first = $(buttons).find('button').first();
-     let btnMassSend = $('<button>', {
-        text: `Массовая транзакция: Вывод (${classMassSend.length})`,
-        class: 'clickMe',
-        id: 'massSend'
-      });
-      $(btnMassSend).insertBefore(first);
-   }
+      $('.massSend-btn').text('Массовая транзакция: Вывод (' + classMassSend.length + ')');
+    } else {
+      $('.massSend-btn').parent().hide();
+    }
 
    let class9 = $('.9');
    if (class9.length) {
-     let first = $(buttons).find('button').first();
-     let btn9 = $('<button>', {
-        text: `Отмена лизинг (${class9.length})`,
-        class: 'clickMe',
-        id: 9
-      });
-      $(btn9).insertBefore(first);
+      $('.cancLeas-btn').text('Отмена лизинг (' + class9.length + ')');
    }
 
    let class8 = $('.8');
    if (class8.length) {
-     let first = $(buttons).find('button').first();
-     let btn8 = $('<button>', {
-      text: `Лизинг (${class8.length})`,
-      class: 'clickMe',
-      id: 8
-    });
-    $(btn8).insertBefore(first);
-   }
+    $('.leasing-btn').text('Лизинг (' + class8.length + ')');
+  } else {
+    $('.leasing-btn').parent().hide();
+  }
 
    let class7 = $('.7');
    if (class7.length) {
-     let first = $(buttons).find('button').first();
-     let btn7 = $('<button>', {
-        text: `Обмен (${class7.length})`,
-        class: 'clickMe',
-        id: 7
-      });
-      $(btn7).insertBefore(first);
-   }
+      $('.exch-btn').text('Обмен (' + class7.length + ')');
+    } else {
+      $('.exch-btn').parent().hide();
+    }
 
    let classSend = $('.send');
    if (classSend.length) {
-     let first = $(buttons).find('button').first();
-     let btnSend = $('<button>', {
-        text: `Вывод (${classSend.length})`,
-        class: 'clickMe',
-        id: 'send'
-      });
-      $(btnSend).insertBefore(first);
-   }
+      $('.send-btn').text('Вывод (' + classSend.length + ')');
+    } else {
+      $('.send-btn').parent().hide();
+    }
 
    if (classDep.length) {
-     let first = $(buttons).find('button').first();
-     let btnDeposit = $('<button>', {
-        text: `Ввод (${classDep.length})`,
-        class: 'clickMe',
-        id: 'deposit'
-      });
-      $(btnDeposit).insertBefore(first);
-   }
+      $('.dep-btn').text('Ввод (' + classDep.length + ')');
+    } else {
+      $('.dep-btn').parent().hide();
+    }
 
    if (classDep.length || classMassReceiv.length) {
-     let first = $(buttons).find('button').first();
-     let btnAll = $('<button>', {
-        text: `Все транзакции (${rawData.length - 1})`,
-        class: 'clickMe',
-        id: 'all'
-      });
-      $(btnAll).insertBefore(first);
-   }
+      $('.all-btn').text('Все транзакции (' + rawData.length + ')');
+    } else {
+      $('.all-btn').parent().hide();
+    }
 
    let buttonBalance = $('.clickMe');
    if (classDep.length || classMassReceiv.length) {
-     let first = $(buttons).find('button').first();
-     let btnBal = $('<button>', {
-        text: `Баланс аккаунта`,
-        class: 'balance',
-        id: 'balance'
-      });
-      $(btnBal).insertBefore(first);
+      $('.bal-btn').text('Баланс аккаунта');
    }
-
-   let evenButtons = $('#buttons > button');
-   $('<br>').insertAfter(evenButtons);
 
    let htmlSearhForm = `
    <div class="cross">
@@ -799,10 +693,7 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
    Введите Waves адрес/название ассета/дату для поиска <br>
    <input type="text" id="field">
    <input type="button" id="searchButton" value="Поиск">`
-   searchField.html(htmlSearhForm);
-   $('.content').css('width', '60%');
    $('.filter').show();
-   searchDataInp.css('width', '87%');
    ipcRenderer.send('alias:add', rawData[0]);
    ipcRenderer.on('aliases:add', function (e, aliases) {
      interimBalance.balance(rawData, listAssets, aliases);
@@ -814,8 +705,23 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
 $(document).ready(function() {
 
   $(document).on('click', '.cross', () => {
-    let text = $('#field').val('');
+    let text = $('.inspectInput').val('');
   });
+
+  let rotateMenuBtn = 1;
+  $(document).on('click', '#additionalMenu', () => {
+    if (rotateMenuBtn % 2) {
+      $('.buttons-form').css({
+        'transform': 'rotateY(180deg)'
+      });
+    } else {
+      $('.buttons-form').css({
+        'transform': 'rotateY(0deg)'
+      });
+    }
+    rotateMenuBtn++;
+  });
+
 
 
   idClick = 'all';
@@ -824,14 +730,13 @@ $(document).ready(function() {
       shell.openExternal(this.href);
   });
 
-  $('.searchDataBtn').click(function(e){
+  $('.content .blick_btn').click(function(e){
     e.preventDefault();
     let address = searchDataInp.val().trim(); // добавил trim()
     if (address) {
-      $('.filter').hide();
       searchDataInp.val('');
-      $('.content').css('width', '100%');
-      searchDataInp.css('width', '80%');
+      // $('.content').css('width', '100%');
+      // searchDataInp.css('width', '80%');
       ipcRenderer.send('address:add', address);
     }
   });
@@ -850,7 +755,7 @@ $(document).ready(function() {
       }
   });
 
-  $('body').on("click", ".balance", function(){
+  $('body').on("click", "#balance", function(){
     let win = new BrowserWindow ({alwaysOnTop: false, width: 400, height: 500});
     win.on('close', function() {win = null});
     win.loadFile('balance.html');
@@ -874,8 +779,8 @@ $(document).ready(function() {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-  $('body').on("click", "#searchButton", function() {
-    let value = $("#field").val().toLowerCase();
+  $('body').on("click", ".inspectBtn", function() {
+    let value = $(".inspectInput").val().toLowerCase();
     if (value) {
        if (idClick == 'all') {
          $('#goal').children().show();

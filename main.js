@@ -41,9 +41,9 @@ function createWindow () {
 
 // max-width: 810
   win = new BrowserWindow({
-    width: 1000,
-    height: 650,
-    resizable: true,
+    width: 600,
+    height: 147,
+    resizable: false,
     // frame: false,
     // transparent: true,
     'webPreferences':
@@ -142,7 +142,7 @@ request(opt)
     array2.forEach(function (item) {
       array.push(item)
     });
-    if (response2.length > 0 && array.length < 50000) {
+    if (response2.length > 0 && array.length < 100000) {
     lastObject = array2[array2.length-1];
     lastId = lastObject['id'];
     loopAPI(array, address, lastId);
@@ -221,14 +221,15 @@ let url = `https://api.wavesplatform.com/v0/assets?${items}`
         listIds(getArray);
       })
     } else {
-      win.setSize(1250,650)
+
       win.webContents.send('idsandprecision:add', currentList);
     }
     };
 
 ipcMain.on('ids:add', function (event, array) {
   let getArray = array;
-  listIds(getArray)
+  listIds(getArray);
+  win.setSize(1700,690)
   });
 
 

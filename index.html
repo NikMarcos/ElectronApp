@@ -9,40 +9,173 @@
   </head>
   <body>
 
-
-    <div class="content">
-      <div class="searchData">
-        <label>Введите Waves адрес для получения транзакций</label><br>
-        <input type="text" id="searchDataInp" value="3PNyufK63k984CrsLbJzdMcZQrJV8PzRfSG" placeholder="Waves address">
-        <input type="button" class="searchDataBtn" value="Стартуем!">
+    <div class="wrapper">
+      <div class="content">
+        <div id='introText'>Введите Waves адрес</div>
+        <div class="searchData">
+          <input type="text" id="searchDataInp" value="3PNyufK63k984CrsLbJzdMcZQrJV8PzRfSG" placeholder="Waves адрес">
+          <button type="button" class="blick_btn">Стартуем!</button>
+        </div>
+        <div id="address"></div>
+        <div id="goal"></div>
+        <div id="upbutton"></div>
       </div>
-      <br>
-      <div id="address"></div>
-      <br>
-      <div id="goal"></div>
-      <div id="upbutton"></div>
-    </div>
-
-    <div class="filter">
-      <br>
-      <div id="search"></div>
-      <br>
-      <div id="buttons"></div>
-      <div id="extract"></div>
+      <div class="filter">
+          <div id="search">
+            <div class="searchData">
+              <div class="cross">
+                <svg width="12" height="12">
+                  <path d="M0 0 L 12 12 M12 0 L 0 12" stroke="black" stroke-width="2"/>
+                </svg>
+              </div>
+              <input type="text" id="searchDataInp" class='inspectInput' placeholder="Данные для поиска">
+              <button type="button" class="blick_btn inspectBtn">Искать</button>
+              <button type="button" class="blick_btn" id='additionalMenu'>
+                <div class="burg"></div>
+                <div class="burg"></div>
+                <div class="burg"></div>
+              </button>
+            </div>
+          </div>
+          <div class="buttons-form">
+            <div id="buttons">
+              <button type="button" class='button' id='balance'>
+                <span class='bal-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='all'>
+                <span class='all-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='deposit'>
+                <span class='dep-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='send'>
+                <span class='send-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='7'>
+                <span class='exch-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='8'>
+                <span class='leasing-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='9'>
+                <span class='cancLeas-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='massSend'>
+                <span class='massSend-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='massReceiv'>
+                <span class='massReceive-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='3'>
+                <span class='assetCreation-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='5'>
+                <span class='assetReissue-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='6'>
+                <span class='burn-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='10'>
+                <span class='alias-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='12'>
+                <span class='data-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='13'>
+                <span class='script-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='15'>
+                <span class='assetScript-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='14'>
+                <span class='sponsor-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='16'>
+                <span class='scriptCall-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+              <button type="button" class='button clickMe' id='else'>
+                <span class='else-btn'>найти</span>
+                <svg class='svg_button'>
+                  <rect class='rect_button'></rect>
+                </svg>
+              </button>
+            </div>
+            <div class="extract">
+              <button type="button" class="extractMe blick_btn" id='csvAll'>Экспорт всех транзакций</button>
+              <button type="button" class="extractMe blick_btn" id='csvDeposit'>Экспорт вводов</button>
+              <button type="button" class="extractMe blick_btn" id='csvWithdrawal'>Экспорт выводов</button>
+              <button type="button" class="extractMe blick_btn" id='csvEx'>Экспорт обменов</button>
+            </div>
+          </div>
+      </div>
     </div>
     <!-- <script>require('electron-connect').client.create()</script> -->
     <script src="index.js"></script>
 
     <script>
-      $(window).scroll(function() {
-          if ($(this).scrollTop() > 100) {
+      $('.content').scroll(function() {
+          if ($('.content').scrollTop() > 100) {
               if ($('#upbutton').is(':hidden')) {
                   $('#upbutton').css({opacity : 0.8}).fadeIn('slow');
               }
           } else { $('#upbutton').stop(true, false).fadeOut('fast'); }
       });
       $('#upbutton').click(function() {
-          $('html, body').stop().animate({scrollTop : 0}, 500);
+          $('.content').stop().animate({scrollTop : 0}, 500);
       });
     </script>
 
