@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./node_modules/animate.css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
      <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' 'unsafe-eval' index.js"> -->
@@ -13,13 +14,29 @@
       <div class="content">
         <div id='introText'>Введите Waves адрес</div>
         <div class="searchData">
-          <input type="text" id="searchDataInp" value="3PNyufK63k984CrsLbJzdMcZQrJV8PzRfSG" placeholder="Waves адрес">
+          <input type="text" id="searchDataInp" placeholder="Waves адрес">
           <button type="button" class="blick_btn">Стартуем!</button>
         </div>
         <div id="address"></div>
-        <div id="goal"></div>
-        <div id="upbutton"></div>
+        <div id="goal">
+          <!-- <div class='loader'>
+          <div class="sticks">
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+          </div>
+          <svg>
+            <circle cx='50%' cy='50%' r='150'></circle>
+          </svg>
+        </div> -->
       </div>
+            </div>
+            <div id="upbutton"></div>
       <div class="filter">
           <div id="search">
             <div class="searchData">
@@ -40,115 +57,115 @@
           <div class="buttons-form">
             <div id="buttons">
               <button type="button" class='button' id='balance'>
-                <span class='bal-btn'>найти</span>
+                <span class='bal-btn'>баланс аккаунта</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='all'>
-                <span class='all-btn'>найти</span>
+                <span class='all-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='deposit'>
-                <span class='dep-btn'>найти</span>
+                <span class='dep-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='send'>
-                <span class='send-btn'>найти</span>
+                <span class='send-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='7'>
-                <span class='exch-btn'>найти</span>
+                <span class='exch-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='8'>
-                <span class='leasing-btn'>найти</span>
+                <span class='leasing-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='9'>
-                <span class='cancLeas-btn'>найти</span>
+                <span class='cancLeas-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='massSend'>
-                <span class='massSend-btn'>найти</span>
+                <span class='massSend-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='massReceiv'>
-                <span class='massReceive-btn'>найти</span>
+                <span class='massReceive-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='3'>
-                <span class='assetCreation-btn'>найти</span>
+                <span class='assetCreation-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='5'>
-                <span class='assetReissue-btn'>найти</span>
+                <span class='assetReissue-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='6'>
-                <span class='burn-btn'>найти</span>
+                <span class='burn-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='10'>
-                <span class='alias-btn'>найти</span>
+                <span class='alias-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='12'>
-                <span class='data-btn'>найти</span>
+                <span class='data-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='13'>
-                <span class='script-btn'>найти</span>
+                <span class='script-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='15'>
-                <span class='assetScript-btn'>найти</span>
+                <span class='assetScript-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='14'>
-                <span class='sponsor-btn'>найти</span>
+                <span class='sponsor-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='16'>
-                <span class='scriptCall-btn'>найти</span>
+                <span class='scriptCall-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
               </button>
               <button type="button" class='button clickMe' id='else'>
-                <span class='else-btn'>найти</span>
+                <span class='else-btn'>пусто</span>
                 <svg class='svg_button'>
                   <rect class='rect_button'></rect>
                 </svg>
@@ -163,10 +180,13 @@
           </div>
       </div>
     </div>
-    <!-- <script>require('electron-connect').client.create()</script> -->
+
+
+
     <script src="index.js"></script>
 
     <script>
+
       $('.content').scroll(function() {
           if ($('.content').scrollTop() > 100) {
               if ($('#upbutton').is(':hidden')) {

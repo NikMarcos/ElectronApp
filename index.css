@@ -148,8 +148,8 @@ button:focus{
   display: none;
   background-color: #EDFAFF;
   position: relative;
-  -webkit-perspective: 1000px;
-          perspective: 1000px;
+  -webkit-perspective: 2000px;
+          perspective: 2000px;
   overflow: hidden;
   -webkit-perspective-origin: 50% 50%;
           perspective-origin: 50% 50%;
@@ -282,8 +282,6 @@ background-color: transparent;
   top: 0;
   left: 0;
   min-width: 670px;
-  /* height: 100%; */
-  /* border: 1px solid black; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 320px));
   grid-template-rows: repeat(auto-fit, 40px);
@@ -306,7 +304,6 @@ background-color: transparent;
   align-items: center;
   backface-visibility: hidden;
   transform: rotateY(180deg);
-  /* background-color: #C3DBF7; */
 }
 
 .buttons-form{
@@ -330,7 +327,6 @@ background-color: transparent;
 
 .blick_btn, .blick_btn:focus{
   position: relative;
-  /* margin: 20px 0; */
   width: 12%;
   height: 30px;
   color: white;
@@ -363,19 +359,6 @@ background-color: transparent;
 }
 
 
-
-/* progress bar styles */
-#testDiv{
-  transform: translateX(20%);
-  font-family: "Verdana", sans-serif;
-  font-size: 20px;
-}
-#progress {
-  width: 60%;
-  background-color: #ddd;
-  border-radius: 10px;
-}
-
 .bal{
   border-radius: 7px;
   padding: 3px;
@@ -391,7 +374,6 @@ background-color: transparent;
 .bal:hover{
   box-shadow: -2px 2px 4px;
   transform: scale(1.05);
-  /* margin-left: 25px; */
 }
 
 .bal a{
@@ -405,15 +387,117 @@ background-color: transparent;
   font-size: 15pt;
 }
 
-#bar {
-  width: 0;
-  height: 30px;
-  background-color: #4CAF50;
-  text-align: center;
-  line-height: 30px;
-  color: white;
-}
-
 .spam{
   background-color: #D3D3D3;
+}
+
+.loader{
+  width: 320px;
+  height: 320px;
+  position: absolute;
+  top: 20%;
+}
+
+.sticks{
+  height: 100px;
+  position: absolute;
+  top: 32%;
+  left: 17%;
+  display: flex;
+  align-items: center;
+}
+
+.stick{
+  width: 20px;
+  height: 100px;
+  margin: 0 5px;
+  border-radius: 10px;
+  position: relative;
+  animation: load 0.8s infinite ease-out;
+}
+
+
+.stick:nth-child(1){
+  animation-delay: 0.1s;
+  background: linear-gradient(to right, rgba(255, 0, 0, 1), rgba(255,0,0,0.9));
+}
+.stick:nth-child(2){
+  animation-delay: 0.2s;
+  background: linear-gradient(to right, rgba(255,0,0,0.9), rgba(255,0,0,0.8));
+}
+
+.stick:nth-child(3){
+  animation-delay: 0.3s;
+  background: linear-gradient(to right, rgba(255,0,0,0.8), rgba(255,0,0,0.7));
+}
+.stick:nth-child(4){
+  animation-delay: 0.4s;
+  background: linear-gradient(to right, rgba(255, 0, 0, 0.7), rgba(255,0,0,0.6));
+}
+.stick:nth-child(5){
+  animation-delay: 0.5s;
+  background: linear-gradient(to right, rgba(255, 0, 0, 0.6), rgba(255,0,0,0.5));
+}
+.stick:nth-child(6){
+  animation-delay: 0.6s;
+  background: linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(255,0,0,0.4));
+}
+.stick:nth-child(7){
+  animation-delay: 0.7s;
+  background: linear-gradient(to right, rgba(255, 0, 0, 0.4), rgba(255,0,0,0.3));
+}
+
+.loader svg{
+  position: absolute;
+  top: 1%;
+  left: 1%;
+  width: 310px;
+  height: 310px;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.loader svg circle{
+  fill: none;
+  stroke: #0B12F7;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 942;
+  stroke-dashoffset: 942;
+  animation: loader 4s linear infinite;
+}
+
+@keyframes loader{
+  0%,100%{
+    stroke-dashoffset: 942;
+
+  }
+  50%{
+    stroke-dashoffset: 0;
+
+  }
+  50.1%{
+    stroke-dashoffset: 1882;
+
+  }
+}
+
+@keyframes load {
+  0%{
+    height: 0;
+  }
+  50%{
+    height: 100px;
+  }
+  100%{
+    height: 0;
+  }
 }

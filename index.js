@@ -54,6 +54,7 @@ const elm = $('.content #goal');
 const searchField = $('.filter #search');
 const extractButtons = $('.filter #extract');
 const searchDataInp = $('#searchDataInp');
+// const loader = $('.loader');
 
 let unique;
 let rawData;
@@ -63,11 +64,23 @@ let listAssets = {};
 
 ipcRenderer.on('link:add', function (e, data) {
     elm.empty();
-    // buttons.empty();
     address.empty();
-    // searchField.empty();
     extractButtons.empty();
-    let html = `<div id="testDiv">Поиск данных аккаунта...</div>`;
+    let html = `<div class='loader'>
+      <div class="sticks">
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+        <div class="stick"></div>
+      </div>
+      <svg>
+        <circle cx='50%' cy='50%' r='150'></circle>
+      </svg>
+    </div>`;
     $(elm).html(html);
 });
 
@@ -693,13 +706,20 @@ ipcRenderer.on('idsandprecision:add', function (e, listAssets) {
    Введите Waves адрес/название ассета/дату для поиска <br>
    <input type="text" id="field">
    <input type="button" id="searchButton" value="Поиск">`
-   $('.filter').show();
+   $('.filter').show(function() {
+       ipcRenderer.send('resize', 'data');
+   });
+
    ipcRenderer.send('alias:add', rawData[0]);
    ipcRenderer.on('aliases:add', function (e, aliases) {
      interimBalance.balance(rawData, listAssets, aliases);
    });
 
+
+
 });
+
+
 
 
 $(document).ready(function() {
